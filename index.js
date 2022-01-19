@@ -22,4 +22,4 @@ Client.on("messageCreate", message =>{
 
 
 
-Client.login("NjY2MzY3Mjk5MDgyNzgwNjkz.XhzI6A.8gLmR6Kw2m2fsN6PiU47VhBnHSM");
+Client.login(processus.env.TOKEN);
