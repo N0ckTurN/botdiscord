@@ -22,4 +22,4 @@ Client.on("messageCreate", message =>{
 
 
 
-Client.login(processus.env.TOKEN);
+Client.login(process.env.TOKEN);
