@@ -1,25 +1,47 @@
-const Discord = require('discord.js');
-const Client = new Discord.Client({
+const config = require('./config');
+const { Client, GatewayIntentBits, Colors } = require("discord.js");
+const { Manager } = require("real-giveaways");
+
+const client = new Client({
     intents: [
-        Discord.Intents.FLAGS.GUILDS,
-        Discord.Intents.FLAGS.GUILD_MESSAGES,
-        Discord.Intents.FLAGS.DIRECT_MESSAGES
-    ]
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.MessageContent,
+    ],
+    allowedMentions: {
+        repliedUser: false,
+    },
 });
 
-Client.on("ready", () => {
+const manager = new Manager(client, {
+    embedColor: Colors.Blurple,
+    pingEveryone: false,
+    emoji: "🎁",
+  });
+
+module.exports = {manager, client };
+
+//Bot connection 
+client.on("ready", () => {
     console.log("Connecté");
-    Client.user.setStatus("online")
-Client.user.setActivity("Zeyrox.pro" , {type: 1 })
+    client.user.setStatus("online")
+client.user.setActivity("Zeyrox.pro" , {type: 1 })
+// Charger les fichiers du GiveawaysEvents
+require("./GiveawaysEvents")(client, manager);
 });
 
-Client.on("messageCreate", message =>{
-    if (message.author.bot) return;
+client.on("messageCreate", async (message) => {
+    if (!message.guild || message.author.bot) return ;
+    let prefix = config.PREFIX;
+    let args = message.content.slice(prefix.length).trim().split(/ +/);
+    let cmd = args.shift()?.toLowerCase();
 
-    message.reply("Nique ta mère et ferme ta gueule stp , Merci , CORDIALEMENT.");
+    if (cmd = "gstart"){
+        message.reply("cmd working");
+    }
 });
 
 
-
-
-Client.login(process.env.TOKEN);
+//token du bot
+client.login(config.TOKEN);
